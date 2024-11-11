@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rust Encryption Test</title>
+    <script type="module">
+      import init, { SecurityService } from "./pkg/rust_encryption.js";
+
+      async function loadWasm() {
+        await init();
+
+        document.getElementById("setBtn").addEventListener("click", () => {
+          const value = document.getElementById("value").value;
+          const encrypted = SecurityService.set(value);
+          document.getElementById("encryptedOutput").innerText = encrypted;
+        });
+
+        document.getElementById("getBtn").addEventListener("click", () => {
+          const encrypted = document.getElementById("value").value;
+          const decrypted = SecurityService.get(encrypted);
+          document.getElementById("decryptedOutput").innerText = decrypted;
+        });
+      }
+
+      loadWasm();
+    </script>
+  </head>
+  <body>
+    <h1>Rust Encryption Test with WebAssembly</h1>
+
+    <label for="value">Value:</label>
+    <input
+      type="text"
+      id="value"
+      placeholder="Enter text to encrypt or encrypted text"
+      required
+    />
+    <br /><br />
+    <button id="setBtn">Encrypt (Set)</button>
+    <button id="getBtn">Decrypt (Get)</button>
+    <h3>Encrypted Output:</h3>
+    <p id="encryptedOutput"></p>
+    <h3>Decrypted Output:</h3>
+    <p id="decryptedOutput"></p>
+  </body>
+</html>
